@@ -62,6 +62,10 @@ async function main(){
 var emp = await fetch("https://raw.githubusercontent.com/dixitsoham7/dixitsoham7.github.io/main/index.json");
 emp = await emp.json();
 emp = emp.employees;
+for(var i of emp){
+    if (i.name==null)i.name="unknown";
+    if (i.designation==null)i.designation="unknown";
+}
 ReactDOM.render(<App title="All Employees" emp={emp}/>,document.getElementById("root"));
 }
 async function name(){
@@ -72,7 +76,11 @@ async function name(){
     emp = emp.employees;
     var emplist = []
     for(var i of emp){
-        if (i.name == name)emplist.push(i);
+    if (i.name==null)i.name="unknown";
+    if (i.designation==null)i.designation="unknown";
+}
+    for(var i of emp){
+        if (i.name.toLowerCase() ==name.toLowerCase())emplist.push(i);
     }
     ReactDOM.render(<App title={`results for name : ${name}`}emp={emplist}/>,document.getElementById("root"));
 }
@@ -84,7 +92,11 @@ async function desig(){
     emp = emp.employees;
     var emplist = []
     for(var i of emp){
-        if (i.designation == desig)emplist.push(i);
+    if (i.name==null)i.name="unknown";
+    if (i.designation==null)i.designation="unknown";
+}
+    for(var i of emp){
+        if (i.designation.toLowerCase() == desig.toLowerCase())emplist.push(i);
     }
     ReactDOM.render(<App title={`results for designation : ${desig}`} emp={emplist}/>,document.getElementById("root"));
 }
