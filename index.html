@@ -32,6 +32,8 @@ function Emp(props){
             <h2>Id : {props.id}</h2>
             <h2>Name : {props.name}</h2>
             <h2>Designation : {props.designation}</h2>
+            <h2>skills :</h2>
+            <ul>{props.skills!=null?props.skills.map((skill)=><li>{skill}</li>):'unknown'}</ul>
         </div>
     )
 }
@@ -40,7 +42,11 @@ function App(props){
     var emplist = []
     function getemp(){
         for(var i of emps){
-            emplist.push(<Emp id={i.id} name= {i.name} designation={i.designation}/>)
+            emplist.push(<Emp 
+            id={i.id} 
+            name= {i.name} 
+            designation={i.designation}
+            skills = {i.skills}/>)
         }
         return emplist;
     }
@@ -48,9 +54,9 @@ return (
     <div id="body">
     <h1>EMPLOYEE DIRECTORY</h1>
     <button onClick={main}>DisplayAll</button>
-    Filter by name :<input type="text" name="Name"/><button className="btn-primary"onClick={name}>submit</button>
+    Filter by name :<input type="text" name="Name"/><button onClick={name}>submit</button>
     Filter by designation :<input type="text" name="Desig"/><button onClick={desig}>submit</button>
-    
+    Filter by skill :<input type="text" name="Skill"/><button onClick={skill}>submit</button>
     <h6>Displaying {props.title}</h6>
     <div className="list-group list-group-flush">
     <hr />   
@@ -99,6 +105,24 @@ async function desig(){
         if (i.designation.toLowerCase() == desig.toLowerCase())emplist.push(i);
     }
     ReactDOM.render(<App title={`results for designation : ${desig}`} emp={emplist}/>,document.getElementById("root"));
+}
+async function skill(){
+    var skill = document.getElementsByTagName("input")['Skill'].value;
+    document.getElementsByTagName("input")['Skill'].value="";
+    var emp = await fetch("https://raw.githubusercontent.com/dixitsoham7/dixitsoham7.github.io/main/index.json");
+    emp = await emp.json();
+    emp = emp.employees;
+    var emplist = []
+    for(var i of emp){
+    if (i.name==null)i.name="unknown";
+    if (i.designation==null)i.designation="unknown";
+}
+    for(var i of emp){
+        if(i.skills==null)continue;
+        for(var j of i.skills){
+            if (j.toLowerCase()==skill.toLowerCase())emplist.push(i);}
+    }
+    ReactDOM.render(<App title={`results for skill : ${skill}`} emp={emplist}/>,document.getElementById("root"));
 }
 main();
 </script>
